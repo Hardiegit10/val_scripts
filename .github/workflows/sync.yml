@@ -1,0 +1,24 @@
+name: Sync Val.town Code
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Runs every hour
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Fetch & Push Val.town Code
+        run: |
+          node sync-valtown.js
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
